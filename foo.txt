@@ -1,0 +1,4 @@
+.:
+foo.txt
+griffin.txt
+README.md
