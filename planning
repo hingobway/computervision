@@ -1,0 +1,8 @@
+Ideas
+Finger number detector
+Haar cascade https://ccrma.stanford.edu/~mborins/256a/theremax/posts/hand-tracking/
+Split image into parts?
+Saliency? 
+Remove the palm of the hand with circle detection
+Count the number of parts left
+Form some sort of color mask to mask off skin tones
