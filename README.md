@@ -10,7 +10,7 @@ index:
 
 # roadmap
 
-![Overlay System](https://i.imgur.com/SF21z8G.png)
+![](https://i.imgur.com/SF21z8G.png =250x250)
 
 # other info
 >[add ideas](http://freesuggestionbox.com/pub/zvognoe) • [questions](mailto:maxm21@parkschool.net?subject=Inquiry%20about%20Max's%20Final%20Project)
