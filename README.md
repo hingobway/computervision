@@ -10,7 +10,7 @@ index:
 
 # roadmap
 
-<img src="https://i.imgur.com/8X5R13D.png" width="410" height="357"><img src="https://i.imgur.com/YfdNfDc.png" width="377" height="421">
+<img src="https://i.imgur.com/8X5R13D.png" width="410" height="357"><img src="https://i.imgur.com/ZCOr3En.png" width="377" height="421">
 
 
 # other info
