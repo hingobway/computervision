@@ -43,7 +43,7 @@ while 1:
     fmasked = cv2.bitwise_not(fgmask)
     mask2 = cv2.bitwise_and(forest, forest, mask=fmasked)
 
-    final = cv2.add(mask1, mask2) # Merge foreground (anothing moving) with forest
+    final = cv2.add(mask1, mask2) # Merge foreground (anything moving) with forest
 
     bruin_head = cv2.imread("images/test.png", -1)
 
