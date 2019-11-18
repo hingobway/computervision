@@ -1,7 +1,10 @@
 import cv2
 
+# TODO: finish annotating
+
 cap = cv2.VideoCapture(0)
 face_cascade = cv2.CascadeClassifier('facecascade.xml')
+fgbg = cv2.createBackgroundSubtractorKNN(detectShadows=False, dist2Threshold=139, history=999999999)
 
 
 def overlay_transparent(background_img, img_to_overlay_t, x, y, overlay_size=None):
@@ -28,16 +31,29 @@ def overlay_transparent(background_img, img_to_overlay_t, x, y, overlay_size=Non
 
 
 while 1:
-    photo = cv2.imread("heads/test.png", -1)
-    _, img = cap.read()
+    forest = cv2.imread("images/forest.jpg", cv2.IMREAD_COLOR)
 
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    ret, frame = cap.read()
+
+    fgmask = fgbg.apply(frame)
+
+    fgmask = cv2.medianBlur(fgmask, 15)
+
+    mask1 = cv2.bitwise_and(frame, frame, mask=fgmask)
+    fmasked = cv2.bitwise_not(fgmask)
+    mask2 = cv2.bitwise_and(forest, forest, mask=fmasked)
+
+    final = cv2.add(mask1, mask2) # Merge foreground (anothing moving) with forest
+
+    bruin_head = cv2.imread("images/test.png", -1)
+
+    gray = cv2.cvtColor(final, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.1, 4)
 
     for (x, y, w, h) in faces:
-        img = overlay_transparent(img, photo, x, y, (w, h))
+        final = overlay_transparent(final, bruin_head, x, y, (w, h))
 
-    cv2.imshow('Feed', img)
+    cv2.imshow('Feed', final)
 
     k = cv2.waitKey(30) & 0xff
     if k == 27:
