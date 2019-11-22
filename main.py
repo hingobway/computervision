@@ -44,19 +44,27 @@ while 1:  # This code in this loop will be looped forever
 
     final = cv2.add(mask1, mask2)  # Merge foreground (anything moving) with forest
 
-    bruin_head = cv2.imread("images/test.png", -1)
+    bruin_head = cv2.imread("images/test.png", -1)  # Load bruin head image and store it to variable "bruin_head"
 
-    gray = cv2.cvtColor(final, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+    gray = cv2.cvtColor(final, cv2.COLOR_BGR2GRAY)  # Make the foreground + forest frame grayscale
+    faces = face_cascade.detectMultiScale(gray, 1.1, 4)  # Use haar cascade algorithm to detect faces in the grayscale frame, store each face to array "faces"
 
-    for (x, y, w, h) in faces:
-        final = overlay_transparent(final, bruin_head, x, y, (w, h))
+    for (x, y, w, h) in faces:  # Range over all faces and grab position and dimension info
+        final = overlay_transparent(final, bruin_head, x, y, (w, h))  # For each respective face, overlay a bruin head using collected info (coordinates, dimensions)
 
-    cv2.imshow('Feed', final)
+    cv2.imshow('Feed', final)  # Show the final product
 
+    # This next part is standard Python procedure to exit out of a program.
+    # First, it checks to see if the ESC (escape) key is clicked.
+    # If it isn't, the program continues looping.
+    # If it is pressed, the loop "breaks," or more notably, ends and runs the final two lines of code.
     k = cv2.waitKey(30) & 0xff
     if k == 27:
         break
 
+# These two lines create a "safe" exit within OpenCV.
+# First, the capture device is released.
+# Lastly, all windows are safely closed.
+# If the program came to an instant halt, there is a small possibility that the damage would bug your OS (operating system). It's better to be safe.
 cap.release()
 cv2.destroyAllWindows()
