@@ -3,6 +3,8 @@ import cv2
 cap = cv2.VideoCapture(0)  # Get video capture by device ID & store it in variable "cap"
 face_cascade = cv2.CascadeClassifier('facecascade.xml')  # Load the haar cascade & store it in variable "face_cascade"
 fgbg = cv2.createBackgroundSubtractorKNN(detectShadows=False, dist2Threshold=139, history=999999999)  # Store background subtraction algorithm KNN into variable "fgbg"
+length, width = cap.get(3), cap.get(4)  # Get dimensions of video capture
+forest = cv2.resize(cv2.imread("images/forest.jpg", cv2.IMREAD_COLOR), (int(length), int(width)))  # Read "forest.jpg" in folder "images" & resize it to dimensions of video capture, store in variable "forest"
 
 
 def overlay_transparent(background_img, img_to_overlay_t, x, y, overlay_size):
@@ -30,8 +32,6 @@ def overlay_transparent(background_img, img_to_overlay_t, x, y, overlay_size):
 
 
 while 1:  # This code in this loop will be looped forever
-    forest = cv2.imread("images/forest.jpg", cv2.IMREAD_COLOR)  # Read "forest.jpg" in folder "images" and store it in variable "forest"
-
     _, frame = cap.read()  # Read the current frame and store it in variable "frame"
 
     fgmask = fgbg.apply(frame)  # Apply the background subtraction algorithm to the current frame, store in variable "fgmask" (stands for foreground mask)
