@@ -2,6 +2,7 @@ import cv2
 
 cap = cv2.VideoCapture(0)  # Get video capture by device ID & store it in variable "cap"
 face_cascade = cv2.CascadeClassifier('facecascade.xml')  # Load the haar cascade & store it in variable "face_cascade"
+# fgbg = cv2.createBackgroundSubtractorKNN(detectShadows=False,dist2Threshold=130,history=999) # Edited version
 fgbg = cv2.createBackgroundSubtractorKNN(detectShadows=False, dist2Threshold=139, history=999999999)  # Store background subtraction algorithm KNN into variable "fgbg"
 length, width = cap.get(3), cap.get(4)  # Get dimensions of video capture
 forest = cv2.resize(cv2.imread("images/forest.jpg", cv2.IMREAD_COLOR), (int(length), int(width)))  # Read "forest.jpg" in folder "images" & resize it to dimensions of video capture, store in variable "forest"
@@ -46,7 +47,7 @@ while 1:  # This code in this loop will be looped forever
 
     bruin_head = cv2.imread("images/test.png", -1)  # Load bruin head image and store it to variable "bruin_head"
 
-    gray = cv2.cvtColor(final, cv2.COLOR_BGR2GRAY)  # Make the foreground + forest frame grayscale
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)  # Make the raw frame grayscale
     faces = face_cascade.detectMultiScale(gray, 1.1, 4)  # Use haar cascade algorithm to detect faces in the grayscale frame, store each face to array "faces"
 
     for (x, y, w, h) in faces:  # Range over all faces and grab position and dimension info
