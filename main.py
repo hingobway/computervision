@@ -4,6 +4,7 @@ face_cascade = cv2.CascadeClassifier('facecascade.xml')
 cap = cv2.VideoCapture(0)
 length, width = cap.get(3), cap.get(4)
 
+
 def overlay_transparent(background_img, img_to_overlay_t, x, y, w,h):
     # Function to overlay a transparent image on another, source 1
 
