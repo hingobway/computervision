@@ -7,8 +7,8 @@ fgbg = cv2.createBackgroundSubtractorKNN(detectShadows=False, dist2Threshold=139
 length, width = cap.get(3), cap.get(4)  # Get dimensions of video capture
 forest = cv2.resize(cv2.imread("images/forest.jpg", cv2.IMREAD_COLOR), (int(length), int(width)))  # Read "forest.jpg" in folder "images" & resize it to dimensions of video capture, store in variable "forest"
 
-cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0) # Turn off auto exposure
-cap.set(cv2.CAP_PROP_EXPOSURE, -4.0) # Set exposure to -4
+cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0)  # Turn off auto exposure
+cap.set(cv2.CAP_PROP_EXPOSURE, -4.0)  # Set exposure to -4
 
 def overlay_transparent(background_img, img_to_overlay_t, x, y, overlay_size):
     # Function to overlay a transparent image on another, source 1
