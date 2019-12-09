@@ -1,9 +1,8 @@
 import cv2
 
-face_cascade = cv2.CascadeClassifier('facecascade.xml')
+face_cascade = cv2.CascadeClassifier('headcascade.xml')
 cap = cv2.VideoCapture(0)
 length, width = cap.get(3), cap.get(4)
-
 
 def overlay_transparent(background_img, img_to_overlay_t, x, y, w,h):
     # Function to overlay a transparent image on another, source 1
@@ -18,6 +17,7 @@ def overlay_transparent(background_img, img_to_overlay_t, x, y, w,h):
     mask = cv2.medianBlur(a, 5)  # Add a blur on the alpha (a) color component by an aperture linear size of 5
 
     h, w, _ = overlay_color.shape  # Get dimensions from colored part of bruin head
+    print(h,w) #crashed @ 462 236
     roi = bg_img[y:y + h, x:x + w]  # Determine a region of interest (ROI) using the background image and colored part of bruin head dimensions
 
     img1_bg = cv2.bitwise_and(roi.copy(), roi.copy(), mask=cv2.bitwise_not(mask))  # Use a bitwise_and mask to mask over the region of interest with an inverse of the alpha (create transparency)
@@ -30,8 +30,9 @@ def overlay_transparent(background_img, img_to_overlay_t, x, y, w,h):
 
 
 while 1:
-    forest = cv2.resize(cv2.imread("images/background.jpg", cv2.IMREAD_COLOR), (int(length), int(width)))
-    photo = cv2.imread("images/bear1.png", -1)
+    forest = cv2.resize(cv2.imread("background.jpg", cv2.IMREAD_COLOR), (int(length), int(width)))
+    photo = cv2.imread("bear1.png", -1)
+
 
     _, frame = cap.read()
 
@@ -40,7 +41,17 @@ while 1:
 
     for (x, y, w, h) in faces:
         # cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
-        forest = overlay_transparent(forest, photo, x, y, w, h)
+
+        height = float(width) - float(y)
+        if int(width) < int(y):
+            height = width
+        if height <= 0:
+            height = 0
+
+
+        bearWidth = (0.512)*(float(height))
+
+        forest = overlay_transparent(forest, photo, x, y, int(bearWidth), int(height))
 
     cv2.imshow('img', forest)
 
