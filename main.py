@@ -1,6 +1,6 @@
 import cv2
 
-face_cascade = cv2.CascadeClassifier('headcascade.xml')
+face_cascade = cv2.CascadeClassifier('facecascade.xml')
 cap = cv2.VideoCapture(0)
 length, width = cap.get(3), cap.get(4)
 
@@ -30,43 +30,52 @@ def overlay_transparent(background_img, img_to_overlay_t, x, y, w,h):
     return bg_img  # Return the bruin head w/ it's position in the frame
 
 while 1:
-    forest = cv2.resize(cv2.imread("forest-ground-oliver-kluwe.jpg", cv2.IMREAD_COLOR), (int(length), int(width)))
-    photo = cv2.imread("bear1.png", -1)
+    forest = cv2.resize(cv2.imread("images/forest-ground-oliver-kluwe.jpg", cv2.IMREAD_COLOR), (int(length), int(width)))  # Resize background with camera's dimensions (prevent size crash)
+    photo = cv2.imread("images/bear1.png", -1)  # Open bear image and store it in variable "photo"
 
-    _, frame = cap.read()
+    _, frame = cap.read()  # Read current frame from video capture, store it in variable "frame"
 
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)  # Make video capture frame grayscale
+    faces = face_cascade.detectMultiScale(gray, 1.1, 4)  # Detect faces in the grayscale frame
 
-    for (x, y, w, h) in faces:
-        print(w)
-        if y < 150 and w < 280:
+    for (x, y, w, h) in faces:  # Loop through all detected faces
+        if y < 150 and w < 280:  # If the y-coordinate is less than 150 (meaning it's either within or not within a y-threshold) and the width of the face is less than 280, run the code in the indents
+            # This next section of code does the following:
+            # After the program has determined that the detected face is over the separation line (between ground and non-ground),
+            # the program puts the bear over the separation line and makes the size of the bear entirely dependent on face position.
+
             height = 293.333333333 - float(y)
             if int(width) < int(y):
                 height = width
             if height <= 0:
                 height = 0
 
-            bearWidth = (0.512)*(float(height))
+            bearWidth = (0.512)*(float(height))  # This ratio is the ratio of the image's width to length
         else:
-            bearWidth = w
-            height = (1.818)*(float(bearWidth))
+            # If the detected face is not found to be over the separation line, proceed normally
 
+            bearWidth = w  # The width of the bear should = the width of the face
+            height = (1.818)*(float(bearWidth))  # This ratio is the ratio of the image's length to width
+
+        # This next section of code determines if the face is near the bottom of the screen.
+        # This is an issue because the bear image can't overlay in null space, so we have to crop it using numpy slicing.
         d = float(width) - float(y)
         if height > d:
-            photo = photo[0:int(d)].copy()
+            photo = photo[0:int(d)]  # This is where numpy slicing happens (crops image's y)
             try:
                 forest = overlay_transparent(forest, photo, x, y, int(bearWidth), int(d))
             except:
                 continue
 
+        # If everything is normal (bear is normally placed in the screen), proceed normally
         try:
             forest = overlay_transparent(forest, photo, x, y, int(bearWidth), int(height))
         except:
             continue
 
-    cv2.imshow('img', forest)
+    cv2.imshow('img', forest)  # Display the final frame
 
+    # This next code actively checks if ESC is pressed, and if it is, the program closes
     k = cv2.waitKey(30) & 0xff
     if k == 27:
         break
