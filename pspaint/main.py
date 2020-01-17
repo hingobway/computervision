@@ -36,21 +36,24 @@ def plotLink(img, id):
     cv.putText(img, link, pos, cv.FONT_HERSHEY_SIMPLEX,
                size, (255, 255, 255), thick, cv.LINE_AA)
 
-
 def saveImage(img):
     ts = str(int(time.time()))
     fname = "assets/picture" + ts + '.jpg'
     cv.imwrite(fname, img)
-    resp = cloudinary.uploader.upload(fname)
-    url = resp['secure_url']
-    r = requests.post('https://pspaint.xyz/api/upload',
-                      data={'url': url, 'timestamp': ts})
-    # r = requests.post('http://localhost:5000/api/upload', data = {'url':url, 'timestamp':ts})
-    if(r.status_code is not 200):
-        # freak out
+
+    try:
+        resp = cloudinary.uploader.upload(fname)
+        url = resp['secure_url']
+        # r = requests.post('https://pspaint.xyz/api/upload',
+        #                 data={'url': url, 'timestamp': ts})
+        r = requests.post('http://localhost:5000/api/upload', data = {'url':url, 'timestamp':ts})
+        if(r.status_code is not 200):
+            pass
+        os.remove(fname)
+        return r.json()['snow']
+    except:
         pass
-    os.remove(fname)
-    return r.json()['snow']
+        
 
 
 # cv.namedWindow('settings')
@@ -149,6 +152,7 @@ while(True):
             if newLine:
                 newLine = False
                 lines.append([color])
+
             lines[-1].append((cX, cY))
         else:
             cursor = (cX, cY)
@@ -197,6 +201,7 @@ while(True):
         cv.circle(img, cursor, 5, (0, 0, 0), -1)
         cv.circle(img, cursor, 3, color, -1)
 
+    img=cv.resize(img,(1280,960),interpolation=cv.INTER_LINEAR)
     cv.imshow('PSPaint', img)
 
     if(save):
@@ -207,6 +212,7 @@ while(True):
     val = cv.waitKey(1)
 
     if(val == ord('q')):
+        draw = False
         lines = []
     if(val == ord('d')):
         if(oldImg is not None):
@@ -214,7 +220,7 @@ while(True):
         draw = not draw
         newLine = True
     if(val == ord('v')):
-        if not draw:
+        if (not draw) and len(lines)>0:
             del lines[-1]
     if(val == ord('e')):
         if(curBG < (len(backgrounds)-1)):
