@@ -206,7 +206,8 @@ while(1):
             '''
     cv.imshow("trackbar", final)
     k = cv.waitKey(5) & 0xFF
-    if k == 32 and chapter != 17 and chapter != 25 and chapter != 27 and chapter != 29 and chapter != 33 and chapter != 50:
+    print (k)
+    if k == 122 and chapter != 17 and chapter != 25 and chapter != 27 and chapter != 29 and chapter != 33 and chapter != 50:
         num = chapter + 1
         cv.setTrackbarPos("Chapter", "trackbar", num)
     elif chapter == 26 or chapter == 28:
