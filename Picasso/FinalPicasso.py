@@ -2,12 +2,14 @@ import cv2 as cv
 import numpy as np
 import tkinter as tk
 
-
 def nothing(x):
     pass
 
 def artaverage():
     while True:
+
+
+
 
 
         vinny = cv.resize(vincenti, (int(cap.get(3)), int(cap.get(4))))

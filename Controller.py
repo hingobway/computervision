@@ -3,7 +3,7 @@ import cv2 as cv
 import numpy as np
 import subprocess
 
-frame = cv.imread('Mona.jpg')
+frame = cv.imread('Picasso/Mona.jpg')
 
 while True:
 
@@ -16,33 +16,33 @@ while True:
 
     if key == ord('q'):
 
-        subprocess.call(['python', 'FinalPicasso.py'])
-
-
+        subprocess.call(['python3', 'Picasso/FinalPicasso.py'])
 
 
     if key == ord('a'):
 
-        subprocess.call(['python', 'HandTrack.py'])
+        subprocess.call(['python3', 'GriffinFinal.py'])
 
 
     if key == ord('z'):
-        exec('FinalPicasso')
+        subprocess.call(['python3', 'Cel-shading style filter Lipitz.py'])
 
     if key == ord('w'):
-        exec('FinalPicasso')
+        subprocess.call(['python3', 'blur4.py'])
 
     if key == ord('s'):
-        exec('FinalPicasso')
+        subprocess.call(['python3', 'Max/firstproject.py'])
 
     if key == ord('x'):
-        exec('FinalPicasso')
+        subprocess.call(['python3', 'Max/secondproject.py'])
+
 
     if key == ord('e'):
-        exec('FinalPicasso')
+        subprocess.call(['python3', 'pspaint/main.py'])
 
     if key == ord('d'):
-        exec('FinalPicasso')
+        subprocess.call(['python3', 'PresentationProgram/Puppet Presentation.py'])
+
 
 
 
